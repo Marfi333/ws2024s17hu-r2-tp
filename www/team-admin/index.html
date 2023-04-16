@@ -5,8 +5,88 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Team Admin</title>
+	<link rel="stylesheet" href="assets/css/style.css">
+	<script defer src="main.js"></script>
 </head>
 <body>
-    <h1>Team admin</h1>
+	<div class="login-wrapper invisible">
+		<form id="loginModal" class="login-modal">
+			<h2>Login</h2>
+			<p>Login using your token</p>
+			<input type="text" placeholder="Token" name="token">
+			<button type="submit" class="btn primary">Login</button>
+			<p class="error"></p>
+		</form>
+	</div>
+
+	<div class="login-wrapper invisible">
+		<form id="deleteModal" class="login-modal">
+			<h2 style="text-align: left; width: 100%">Are you sure?</h2>
+			<p>If you click on the delete button, your team and all runners belonging to your team will be deleted.</p>
+			<div class="flex space-between" style="width: 100%">
+				<button type="submit" class="btn" data-submitter="cancel">Cancel</button>
+				<button type="submit" class="btn danger" data-submitter="delete">Delete</button>
+			</div>
+		</form>
+	</div>
+
+    <div class="main-wrapper">
+		<div class="flex space-between mb-20">
+			<h2 class="title">Manage your team</h2>
+
+			<button class="btn primary" id="logout">Logout</button>
+		</div>
+		<div class="flex column mb-20">
+			<form id="teamDetails" class="row" style="width: 500px">
+				<div class="inpt-group">
+					<label for="">Team name</label>
+					<input type="text" class="inpt teamDetails" name="teamName">
+				</div>
+				<div class="inpt-group">
+					<label for="">Contact email</label>
+					<input type="text" class="inpt teamDetails" name="contactEmail">
+				</div>
+				<div class="inpt-group">
+					<label for="">Location</label>
+					<input type="text" class="inpt teamDetails" name="location">
+				</div>
+				<div class="flex flex-end">
+					<button class="btn danger" data-submitter="delete">Delete team</button>
+					<button id="saveTeamDetails" class="btn primary ml-10" data-submitter="save" disabled>Save</button>
+				</div>
+			</form>
+		</div>
+
+		<hr class="mb-20">
+
+		<div class="flex space-between mb-20">
+			<h2 class="title">Runners</h2>
+			<a href="http://stage-planner.localhost" target="_blank" class="btn primary">Stage planner</a>
+		</div>
+
+		<div class="flex">
+			<table class="runners">
+				<thead>
+					<tr>
+						<th>First Name</th>
+						<th>Last name</th>
+						<th>Speed</th>
+						<th>Token</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody id="runners">
+	
+				</tbody>
+				<tr id="insertRunner">
+					<td><input type='text' placeholder='First Name' class='inpt newRunner' name='newRunnerFirstName' /></td>
+					<td><input type='text' placeholder='Last Name' class='inpt newRunner' name='newRunnerLastName' /></td>
+					<td><input type='text' placeholder='Speed' class='inpt newRunner' name='newRunnerSpeed' /></td>
+					<td>-</td>
+					<td class='actions'><button id='addNewRunner' type='submit' class='btn'>Add</button></td>
+				</tr>
+			</table>
+		</div>
+	</div>
 </body>
 </html>

@@ -1,19 +1,32 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\DefaultController;
+use App\Http\Controllers\TeamController;
+use App\Http\Controllers\RunnerController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\Authorization;
+use App\Http\Middleware\EnsureUserIsAdmin;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(Authorization::class)->prefix('v1')->group(function() {
+	Route::controller(DefaultController::class)->group(function () {
+		Route::withoutMiddleware(Authorization::class)->post('/login', 'login');
+		Route::withoutMiddleware(Authorization::class)->get('/stages', 'getStages');
+	});
+
+	Route::controller(TeamController::class)->group(function() {
+		Route::get('/teams/{teamId}', 'getTeam');
+
+		Route::put('/teams/{teamId}', 'updateTeam')->middleware(EnsureUserIsAdmin::class);
+		Route::delete('/teams/{teamId}', 'deleteTeam')->middleware(EnsureUserIsAdmin::class);
+	});
+
+	Route::controller(RunnerController::class)->group(function() {
+		Route::get('/teams/{teamId}/runners', 'getRunners');
+		Route::get('/teams/{teamId}/runners/{runnerId}', 'getRunner');
+
+		Route::post('/teams/{teamId}/runners', 'createRunner')->middleware(EnsureUserIsAdmin::class);
+		Route::put('/teams/{teamId}/runners/{runnerId}', 'updateRunner')->middleware(EnsureUserIsAdmin::class);
+		Route::delete('/teams/{teamId}/runners/{runnerId}', 'deleteRunner')->middleware(EnsureUserIsAdmin::class);
+	});
 });
